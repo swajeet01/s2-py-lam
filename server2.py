@@ -32,26 +32,25 @@ sockets_list = []
 print(f'Listening for connections on {IP}:{PORT}...')
 
 
+# To pass to thread
 def client_callback(client_socket, info):
-    client_socket.send("Connected to server".encode("utf-8"))
+    client_socket.send("Welcome to LAM\nYou: ".encode("utf-8"))
     while True:
-        try:
-            msg = client_socket.recv(1024)
-            if msg:
-                print("Client: ", msg.decode("utf-8"))
-                broadcast_msg = "Client: " + msg.decode("utf-8")
-                broadcast(broadcast_msg, client_socket)
-            else:
-                remove(client_socket)
-        except:
-            pass
+        msg = client_socket.recv(1024)
+        if msg:
+            msg_str = msg.decode("utf-8")
+            print(msg_str, end='')
+            broadcast_msg = msg_str
+            broadcast(broadcast_msg, client_socket)
+        else:
+            remove(client_socket)
 
 
 def broadcast(msg, sender):
     for socks in sockets_list:
         if socks != sender:
             try:
-                socks.send(msg.encode("utf-8"))
+                socks.send((msg + "\nYou: ").encode("utf-8"))
             except:
                 socks.close()
                 remove(socks)
@@ -69,6 +68,7 @@ while True:
         print("Log: A new user connected")
         client_thread = threading.Thread(target=client_callback, args=(client_socket, info))
         client_thread.start()
+        broadcast("New user connected", client_socket)
     except KeyboardInterrupt:
         print("\nShutting down server...")
         break
