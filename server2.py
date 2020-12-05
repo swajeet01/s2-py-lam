@@ -27,17 +27,27 @@ except socket.gaierror as err:
 
 # Listen for new connections
 server_socket.listen()
-socket_list = []
-address_info_list = []
+# as client_socket: name pair
+clients = {}
 
 print(f'Listening for connections on {IP}:{PORT}...')
 
 
-# To pass to thread
+# callback to pass to thread
+# This Thread is responsible for message transfers b/w server and client
 def client_callback(_client_socket, _info):
     name = _client_socket.recv(1024)
-    broadcast(name.decode("utf-8") + " has joined the chat", _client_socket)
-    _client_socket.send("Welcome to LAM\n".encode("utf-8"))
+    # broadcast message to everyone that a new client is joined
+    name_str = name.decode("utf-8")
+    broadcast(name_str + " has joined the chat", _client_socket)
+    print("LOG:", name_str, "joined")
+    clients[_client_socket] = name_str
+    users = ""
+    for name in clients.values():
+        users += (name + ", ")
+    _client_socket.send("Welcome to LAM".encode("utf-8"))
+    if len(clients) != 1:
+        _client_socket.send(("[" + users[:-2] + "] are here.").encode("utf-8"))
     while True:
         try:
             msg = _client_socket.recv(1024)
@@ -47,34 +57,35 @@ def client_callback(_client_socket, _info):
                 broadcast_msg = msg_str
                 broadcast(broadcast_msg, _client_socket)
             else:
+                print("LOG:", clients[_client_socket], " disconnected")
                 remove(_client_socket)
-                print("client disconnected")
                 break
         except:
+            print("LOG:", clients[_client_socket], " disconnected")
             remove(_client_socket)
-            print("client disconnected")
             return
+    return
 
 
 def broadcast(msg, sender):
-    for socks in socket_list:
-        if socks != sender:
+    for (client, name) in clients.items():
+        if client != sender:
             try:
-                socks.send(msg.encode("utf-8"))
+                client.send(msg.encode("utf-8"))
             except:
-                socks.close()
-                remove(socks)
+                client.close()
+                remove(client)
 
 
 def remove(_client_socket: socket):
-    if _client_socket in socket_list:
-        socket_list.remove(_client_socket)
+    if _client_socket in clients:
+        broadcast(clients.pop(_client_socket) + " has left the chat", _client_socket)
 
 
 while True:
     try:
         (client_socket, info) = server_socket.accept()
-        socket_list.append(client_socket)
+        clients[client_socket] = "Unknown"
         client_thread = threading.Thread(target=client_callback, args=(client_socket, info))
         client_thread.start()
     except KeyboardInterrupt:

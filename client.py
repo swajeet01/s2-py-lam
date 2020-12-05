@@ -27,7 +27,8 @@ while True:
         for notified_socket in read_sockets:
             if notified_socket == s:
                 msg = notified_socket.recv(1024)
-                print(msg.decode("utf-8"))
+                msg_str = msg.decode("utf-8")
+                print(msg_str)
             else:
                 msg = input()
                 if msg.lower() == "c:bye":
