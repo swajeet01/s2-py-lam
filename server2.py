@@ -45,7 +45,7 @@ def client_callback(_client_socket, _info):
     users = ""
     for name in clients.values():
         users += (name + ", ")
-    _client_socket.send("Welcome to LAM".encode("utf-8"))
+    _client_socket.send("Welcome to LAM\n".encode("utf-8"))
     if len(clients) != 1:
         _client_socket.send(("[" + users[:-2] + "] are here.").encode("utf-8"))
     while True:
