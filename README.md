@@ -33,7 +33,7 @@ portable hotspots offered by smartphones or even over internet.
 
 
 ## Methodology/Technology used
-- Python: Python is a snake (It's an interpreted, high-level, general-purpose
+- Python: Python is a snake :snake: (It's an interpreted, high-level, general-purpose
   object-oriented programming language)
 
 
