@@ -49,6 +49,10 @@ portable hotspots offered by smartphones or even over internet.
   instruction that can be managed individually by a scheduler.
 
 
+## ER/Dataflow Diagram
+![ER/Dataflow Diagram](Presentation/our_server.png)
+
+
 ## Usage
 - Server: A server must be running before any client connection
   ```
