@@ -55,31 +55,29 @@ portable hotspots offered by smartphones or even over internet.
 
 ## Usage
 - Server: A server must be running before any client connection
-  ```
-  $ python server2.py
-  ```
+  
+  `$ python server2.py`
+  
   or
-  ```
-  $ python server2.py <IP> <PORT>
-  ```
+  
+  `$ python server2.py <IP> <PORT>`
+  
   for example
-  ```
-  $ python server2.py 127.0.0.1 7066
-  ```
+  
+  `$ python server2.py 127.0.0.1 7066`
 
 
 - Client: A client can connect to a server as-
-  ```
-  $ python client.py
-  ```
+  
+  `$ python client.py`
+  
   or
-  ```
-  $ python client.py <IP> <PORT>
-  ```
+  
+  `$ python client.py <IP> <PORT>`
+  
   for example
-  ```
-  $ python client.py 127.0.0.1 7066
-  ```
+  
+  `$ python client.py 127.0.0.1 7066`
 
 
 ## Results Snapshot
