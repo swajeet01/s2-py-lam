@@ -1,5 +1,7 @@
 # LAM- Local Area Messenger
 
+*This is just a college project, nothing serious.*
+
 ## Team Members
 - Sonu Kumar
   - Roll No: 19107766
